@@ -8,6 +8,10 @@ const openai = new OpenAIApi(configuration);
 const createTourPlan = async (req, res) => {
   const { destination, fromLocation, showLocalRestaurants, showShoppingSites, howToGetThere, noOfDays } = req.body;
 
+  if (noOfDays > 10) {
+    noOfDays = 10
+  }
+
   let prompt = `create me a detailed, day-by-day itinerary for ${noOfDays} days trip to ${destination}.`
 
   if (howToGetThere) {
@@ -28,7 +32,7 @@ const createTourPlan = async (req, res) => {
       model: 'text-davinci-003',
       prompt: prompt,
       temperature: 0.6,
-      max_tokens: 500,
+      max_tokens: 800,
     })
 
     const basePromptOutput = baseCompletion.data.choices.pop()
